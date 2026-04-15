@@ -2,9 +2,17 @@ import React from 'react';
 import { RefreshCw, LayoutDashboard, Settings, User } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const Header = ({ onRefresh, loading }) => {
+const Header = ({ onRefresh, loading, progress }) => {
   return (
-    <header className="glass-header h-20">
+    <header className="glass-header h-20 relative">
+      {loading && (
+        <motion.div 
+          className="absolute bottom-0 left-0 h-[2px] bg-emerald-500 z-50 shadow-[0_0_10px_#10b981]"
+          initial={{ width: 0 }}
+          animate={{ width: `${progress}%` }}
+          transition={{ ease: "linear" }}
+        />
+      )}
       <div className="container h-full flex items-center justify-between">
         <div className="flex items-center gap-8">
           <motion.div 
@@ -43,7 +51,7 @@ const Header = ({ onRefresh, loading }) => {
             }`}
           >
             <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />
-            {loading ? 'Sincronizando...' : 'Sincronizar'}
+            {loading ? `Sincronizando ${Math.round(progress)}%` : 'Sincronizar'}
           </motion.button>
           
           <div className="h-8 w-[1px] bg-white/[0.05]"></div>
