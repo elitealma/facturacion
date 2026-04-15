@@ -2,12 +2,7 @@ version: '3.8'
 
 services:
   facturacion-app:
-    build:
-      context: .
-      args:
-        - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
-        - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
-    container_name: facturacion_elite
+    image: ghcr.io/elitealma/facturacion:main
     ports:
       - "80:80"
     restart: always
