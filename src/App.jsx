@@ -3,6 +3,7 @@ import { supabase } from './lib/supabase';
 import Header from './components/Header';
 import StatsGrid from './components/StatsGrid';
 import InvoiceTable from './components/InvoiceTable';
+import QuickAddModal from './components/QuickAddModal';
 import { motion, AnimatePresence } from 'framer-motion';
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [syncProgress, setSyncProgress] = useState(0);
   const [isSyncing, setIsSyncing] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [stats, setStats] = useState({
     totalAmount: 0,
     totalCount: 0,
@@ -123,6 +125,12 @@ function App() {
     }
   };
 
+  const handleManualAdd = (newInvoice) => {
+    const updatedInvoices = [newInvoice, ...invoices];
+    setInvoices(updatedInvoices);
+    calculateStats(updatedInvoices);
+  };
+
   const calculateStats = (data) => {
     const total = data.reduce((acc, curr) => acc + Number(curr.total), 0);
     const synced = data.filter(item => item.status === 'Synced').length;
@@ -155,6 +163,15 @@ function App() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="mt-8"
         >
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold italic tracking-tight text-zinc-400">Registros de Actividad</h2>
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              className="px-4 py-2 bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.05] rounded-lg text-sm transition-all"
+            >
+              + Nueva Orden
+            </button>
+          </div>
           <InvoiceTable 
             invoices={invoices} 
             loading={loading} 
@@ -162,6 +179,12 @@ function App() {
           />
         </motion.div>
       </main>
+
+      <QuickAddModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        onAdd={handleManualAdd}
+      />
 
       <footer className="py-12 mt-20 border-t border-white/[0.05] text-center text-zinc-500 text-sm">
         <p>&copy; 2026 Elite Facturación - Powered by Pegasus 360 Agency</p>
