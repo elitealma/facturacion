@@ -3,6 +3,16 @@ version: '3.8'
 services:
   facturacion-app:
     image: ghcr.io/elitealma/facturacion:main
-    ports:
-      - "8080:80"
+    networks:
+      - traefik_proxy # Ajustar si el nombre de la red de Traefik es diferente
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.facturacion-elite.rule=Host(`facturacion.pegasus360agency.com`)"
+      - "traefik.http.routers.facturacion-elite.entrypoints=websecure"
+      - "traefik.http.routers.facturacion-elite.tls.certresolver=myresolver" # Cambiar 'myresolver' por el nombre de tu resolver de Let's Encrypt
+      - "traefik.http.services.facturacion-elite.loadbalancer.server.port=80"
     restart: always
+
+networks:
+  traefik_proxy:
+    external: true
