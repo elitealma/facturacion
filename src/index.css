@@ -1,18 +1,18 @@
 :root {
-  --background: #050505;
-  --surface: #0a0a0a;
-  --surface-header: rgba(10, 10, 10, 0.8);
-  --card: #111111;
-  --card-hover: #161616;
-  --border: rgba(255, 255, 255, 0.08);
-  --text-primary: #ffffff;
-  --text-secondary: #a1a1aa;
-  --accent: #10b981;
-  --accent-glow: rgba(16, 185, 129, 0.2);
+  --background: #111111;
+  --surface: #18181A;
+  --surface-header: #111111;
+  --card: #1C1C1E;
+  --card-hover: #222224;
+  --border: rgba(255, 255, 255, 0.06);
+  --text-primary: #F4F4F5;
+  --text-secondary: #A1A1AA;
+  --accent: #4ade80;
+  --accent-glow: rgba(74, 222, 128, 0.15);
   --accent-gold: #fbbf24;
   --error: #ef4444;
-  --success: #10b981;
-  --warning: #f59e0b;
+  --success: #4ade80;
+  --warning: #fbbf24;
 }
 
 * {
