@@ -96,6 +96,7 @@ function App() {
         calculateStats(data);
       }
     } catch (error) {
+      console.error(error);
       setInvoices(dummyData);
       calculateStats(dummyData);
     } finally {
@@ -105,13 +106,15 @@ function App() {
 
   const handleManualAdd = async (newInvoice) => {
     try {
-      const { id, ...invoiceToInsert } = newInvoice;
+      const invoiceToInsert = { ...newInvoice };
+      delete invoiceToInsert.id;
       const { error } = await supabase
         .from('invoices')
         .insert([invoiceToInsert]);
 
       if (error) throw error;
     } catch (error) {
+      console.error(error);
       const updatedInvoices = [{...newInvoice, id: Math.random().toString()}, ...invoices];
       setInvoices(updatedInvoices);
       calculateStats(updatedInvoices);
@@ -127,6 +130,7 @@ function App() {
 
       if (error) throw error;
     } catch (error) {
+      console.error(error);
       const updatedInvoices = invoices.filter(inv => inv.id !== id);
       setInvoices(updatedInvoices);
       calculateStats(updatedInvoices);

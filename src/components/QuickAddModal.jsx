@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { X, Send } from 'lucide-react';
 
 const QuickAddModal = ({ isOpen, onClose, onAdd }) => {
@@ -29,18 +29,12 @@ const QuickAddModal = ({ isOpen, onClose, onAdd }) => {
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          <div
             onClick={onClose}
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300"
           />
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="glass w-full max-w-lg rounded-2xl overflow-hidden relative z-10"
+          <div
+            className="glass w-full max-w-lg rounded-2xl overflow-hidden relative z-10 transition-all duration-300 transform"
           >
             <div className="p-6 border-b border-white/[0.05] flex items-center justify-between">
               <h2 className="text-xl font-bold italic tracking-tight">Nueva Orden Manual</h2>

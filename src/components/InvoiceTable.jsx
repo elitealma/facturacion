@@ -22,7 +22,7 @@ const InvoiceTable = ({ invoices, loading, onDelete }) => {
     return colors[source] || 'bg-zinc-500';
   };
 
-  const getMethodBadgeClass = (method) => {
+  const getMethodBadgeClass = () => {
     return "px-3 py-1 text-[10px] font-bold uppercase rounded-full border border-white/[0.05] bg-[#ffffff]/5 text-zinc-300";
   };
 
