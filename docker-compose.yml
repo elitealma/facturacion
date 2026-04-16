@@ -4,7 +4,7 @@ services:
   facturacion-app:
     image: ghcr.io/elitealma/facturacion:main
     networks:
-      - traefik_default # Este suele ser el nombre por defecto si tu stack se llama 'traefik'
+      - proxy
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.facturacion-elite.rule=Host(`facturacion.pegasus360agency.com`)"
@@ -14,5 +14,5 @@ services:
     restart: always
 
 networks:
-  traefik_default:
+  proxy:
     external: true
