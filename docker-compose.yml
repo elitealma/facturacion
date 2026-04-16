@@ -4,5 +4,5 @@ services:
   facturacion-app:
     image: ghcr.io/elitealma/facturacion:main
     ports:
-      - "80:80"
+      - "8080:80"
     restart: always
