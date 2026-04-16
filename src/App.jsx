@@ -72,6 +72,27 @@ function App() {
 
   useEffect(() => {
     fetchInvoices();
+
+    // Sincronización en Tiempo Real
+    const channel = supabase
+      .channel('schema-db-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*', // Escuchar INSERT, UPDATE, DELETE
+          schema: 'public',
+          table: 'invoices',
+        },
+        (payload) => {
+          console.log('Cambio detectado en tiempo real:', payload);
+          fetchInvoices(); // Refrescar datos automáticamente
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const handleSync = async () => {
@@ -125,10 +146,44 @@ function App() {
     }
   };
 
-  const handleManualAdd = (newInvoice) => {
-    const updatedInvoices = [newInvoice, ...invoices];
-    setInvoices(updatedInvoices);
-    calculateStats(updatedInvoices);
+  const handleManualAdd = async (newInvoice) => {
+    try {
+      // Eliminar el ID temporal para que Supabase genere un UUID real
+      const { id, ...invoiceToInsert } = newInvoice;
+      
+      const { data, error } = await supabase
+        .from('invoices')
+        .insert([invoiceToInsert]);
+
+      if (error) throw error;
+      
+      console.log('Orden creada exitosamente');
+      // No necesitamos actualizar el estado local manualmente porque el tiempo real lo hará
+    } catch (error) {
+      console.error('Error al insertar en Supabase, aplicando localmente:', error);
+      const updatedInvoices = [newInvoice, ...invoices];
+      setInvoices(updatedInvoices);
+      calculateStats(updatedInvoices);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const { error } = await supabase
+        .from('invoices')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      
+      console.log('Orden eliminada exitosamente');
+    } catch (error) {
+      console.error('Error al eliminar:', error);
+      // Fallback local por si falla la red
+      const updatedInvoices = invoices.filter(inv => inv.id !== id);
+      setInvoices(updatedInvoices);
+      calculateStats(updatedInvoices);
+    }
   };
 
   const calculateStats = (data) => {
@@ -176,6 +231,7 @@ function App() {
             invoices={invoices} 
             loading={loading} 
             onRefresh={handleSync}
+            onDelete={handleDelete}
           />
         </motion.div>
       </main>

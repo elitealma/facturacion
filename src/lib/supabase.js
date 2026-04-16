@@ -10,6 +10,15 @@ export const supabase = (supabaseUrl && supabaseAnonKey)
       from: () => ({ 
         select: () => ({ 
           order: () => Promise.resolve({ data: [], error: { message: 'Supabase not configured' } }) 
-        }) 
-      }) 
+        }),
+        insert: (data) => Promise.resolve({ data, error: { message: 'Supabase not configured' } }),
+        delete: () => ({
+          eq: () => Promise.resolve({ error: { message: 'Supabase not configured' } })
+        })
+      }),
+      channel: () => ({
+        on: () => ({
+          subscribe: () => ({})
+        })
+      })
     };

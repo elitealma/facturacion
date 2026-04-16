@@ -3,7 +3,7 @@ import { Search, Filter, Download, MoreVertical, ExternalLink } from 'lucide-rea
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
-const InvoiceTable = ({ invoices, loading, onRefresh }) => {
+const InvoiceTable = ({ invoices, loading, onRefresh, onDelete }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterSource, setFilterSource] = useState('All');
 
@@ -128,7 +128,15 @@ const InvoiceTable = ({ invoices, loading, onRefresh }) => {
                       <button className="p-1.5 hover:bg-zinc-800 rounded-md text-zinc-400 hover:text-white">
                         <ExternalLink size={16} />
                       </button>
-                      <button className="p-1.5 hover:bg-zinc-800 rounded-md text-zinc-400 hover:text-white">
+                      <button 
+                        onClick={() => {
+                          if (window.confirm('¿Estás seguro de eliminar este registro?')) {
+                            onDelete(inv.id);
+                          }
+                        }}
+                        className="p-1.5 hover:bg-red-500/10 rounded-md text-zinc-400 hover:text-red-500 transition-colors"
+                        title="Eliminar registro"
+                      >
                         <MoreVertical size={16} />
                       </button>
                     </div>
