@@ -4,7 +4,7 @@ services:
   facturacion-app:
     image: ghcr.io/elitealma/facturacion:main
     networks:
-      - proxy
+      - pegasus_net
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.facturacion-elite.rule=Host(`facturacion.pegasus360agency.com`)"
@@ -14,5 +14,5 @@ services:
     restart: always
 
 networks:
-  proxy:
+  pegasus_net:
     external: true
