@@ -114,7 +114,7 @@ const QuickAddModal = ({ isOpen, onClose, onAdd }) => {
                 </button>
               </div>
             </form>
-          </motion.div>
+          </div>
         </div>
       )}
     </AnimatePresence>
